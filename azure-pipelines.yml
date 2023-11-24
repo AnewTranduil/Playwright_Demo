@@ -5,7 +5,7 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-  - stage: Pre Test
+  - stage: Pre
     jobs:
       - job: PreTest
         steps:
@@ -26,7 +26,7 @@ stages:
           - script: npm test
 
 
-  - stage: Post Test
+  - stage: Post
     jobs:
       - job: PostTest
         steps:
