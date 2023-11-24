@@ -1,0 +1,33 @@
+trigger:
+  - main
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: Pre Test
+    jobs:
+      - job: PreTest
+        steps:
+          - script: echo "Pre test script"
+
+  - stage: Test
+    jobs:
+      - job: TestWork
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '18.x'
+            displayName: 'Install Node.js'
+          - script: |
+              npm install
+              npx playwright install --with-deps
+            displayName:  'Install npm deps'
+          - script: npm test
+
+
+  - stage: Post Test
+    jobs:
+      - job: PostTest
+        steps:
+          - script: echo "Post test script"
