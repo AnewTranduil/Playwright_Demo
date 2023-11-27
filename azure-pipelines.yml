@@ -14,13 +14,15 @@ stages:
   - stage: Test
     jobs:
       - job: TestWork
-        matrix:
-          demo:
-            fileName: 'demo-todo-app.spec.ts'
-          example1:
-            fileName: 'example.spec.ts'
-          example2:
-            fileName: 'example2.spec.ts'
+        strategy:
+          matrix:
+            demo:
+              fileName: 'demo-todo-app.spec.ts'
+            example1:
+              fileName: 'example.spec.ts'
+            example2:
+              fileName: 'example2.spec.ts'
+
         steps:
           - task: NodeTool@0
             inputs:
