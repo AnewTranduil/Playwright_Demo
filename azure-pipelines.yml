@@ -14,6 +14,13 @@ stages:
   - stage: Test
     jobs:
       - job: TestWork
+        matrix:
+          demo:
+            fileName: 'demo-todo-app.spec.ts'
+          example1:
+            fileName: 'example.spec.ts'
+          example2:
+            fileName: 'example2.spec.ts'
         steps:
           - task: NodeTool@0
             inputs:
@@ -23,7 +30,7 @@ stages:
               npm install
               npx playwright install --with-deps
             displayName:  'Install npm deps'
-          - script: npm test
+          - script: npm test -- $(fileName)
 
 
   - stage: Post
