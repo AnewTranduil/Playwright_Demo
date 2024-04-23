@@ -75,5 +75,7 @@ stages:
           - script: echo "Post test script"
           - download: current
             patterns: '**/*.html'
+          - script: ls $(Pipeline.Workspace)
+          - script: ls '$(Pipeline.Workspace)/playwright-report  
           - script: ls
           - script: ls playwright-report
