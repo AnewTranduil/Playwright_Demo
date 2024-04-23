@@ -76,6 +76,6 @@ stages:
           - download: current
             patterns: '**/*.html'
           - script: ls $(Pipeline.Workspace)
-          - script: ls '$(Pipeline.Workspace)/playwright-report  
+          - script: ls $(Pipeline.Workspace)/playwright-report  
           - script: ls
           - script: ls playwright-report
