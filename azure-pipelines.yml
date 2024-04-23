@@ -58,7 +58,7 @@ stages:
               testResultsFiles: 'results.xml'
               mergeTestResults: true
               failTaskOnFailedTests: true
-              testRunTitle: 'My End-To-End Tests'
+              testRunTitle: playwright_test_$(name)
             condition: succeededOrFailed()
           - task: PublishPipelineArtifact@1
             inputs:
