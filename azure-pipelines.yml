@@ -10,6 +10,9 @@ stages:
       - job: PreTest
         steps:
           - script: echo "Pre test script"
+      - job: Pre Test 2
+        steps:
+          - script: echo "Another job run"    
 
   - stage: Test
     jobs:
