@@ -46,7 +46,7 @@ stages:
               npm install
               npx playwright install --with-deps
             displayName:  'Install npm deps'
-          - script: npm test --shard=$(shard)
+          - script: npm test -- --shard=$(shard)
           - script: ls
           - task: PublishTestResults@2
             displayName: 'Publish test results'
