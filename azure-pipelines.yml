@@ -76,4 +76,5 @@ stages:
           - download: current
             patterns: '**/*.html'
           - script: ls $(Pipeline.Workspace)
+          - script: ls $(Pipeline.Workspace)/TestResults
           - script: ls
