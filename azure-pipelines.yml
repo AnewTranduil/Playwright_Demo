@@ -74,6 +74,6 @@ stages:
         steps:
           - script: echo "Post test script"
           - download: current
-            patterns: 'playwright-report/*'
+            patterns: 'playwright-report'
           - script: ls
           - script: ls playwright-report
