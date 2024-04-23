@@ -23,11 +23,11 @@ stages:
         strategy:
           matrix:
             demo:
-              fileName: 'demo-todo-app.spec.ts'
+              shard: '1/3'
             example1:
-              fileName: 'example.spec.ts'
+              shard: '2/3'
             example2:
-              fileName: 'example2.spec.ts'
+              shard: '3/3'
 
         steps:
           - task: NodeTool@0
@@ -46,7 +46,7 @@ stages:
               npm install
               npx playwright install --with-deps
             displayName:  'Install npm deps'
-          - script: npm test -- $(fileName)
+          - script: npm test --shard=$(shard)
           - script: ls
           - task: PublishTestResults@2
             displayName: 'Publish test results'
@@ -60,7 +60,7 @@ stages:
           - task: PublishPipelineArtifact@1
             inputs:
               targetPath: playwright-report
-              artifact: playwright-report-$(filename)
+              artifact: playwright-report-$(shard)
               publishLocation: 'pipeline'
             condition: succeededOrFailed()
 
