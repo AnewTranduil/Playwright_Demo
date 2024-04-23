@@ -48,6 +48,21 @@ stages:
             displayName:  'Install npm deps'
           - script: npm test -- $(fileName)
           - script: ls
+          - task: PublishTestResults@2
+            displayName: 'Publish test results'
+            inputs:
+              testResultsFormat: 'JUnit'
+              testResultsFiles: 'results.xml'
+              mergeTestResults: true
+              failTaskOnFailedTests: true
+              testRunTitle: 'My End-To-End Tests'
+            condition: succeededOrFailed()
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: playwright-report
+              artifact: playwright-report
+              publishLocation: 'pipeline'
+            condition: succeededOrFailed()
 
 
   - stage: Post
