@@ -1,3 +1,6 @@
+variables:
+  npm_config_cache: $(Pipeline.Workspace)/.npm
+
 trigger:
   - main
 
@@ -31,11 +34,20 @@ stages:
             inputs:
               versionSpec: '18.x'
             displayName: 'Install Node.js'
+          - task: Cache@2
+            inputs:
+              key: 'npm | "$(Agent.OS)" | package-lock.json'
+              restoreKeys: |
+                   npm | "$(Agent.OS)"
+              path: $(npm_config_cache)
+            displayName: Cache npm  
+            
           - script: |
               npm install
               npx playwright install --with-deps
             displayName:  'Install npm deps'
           - script: npm test -- $(fileName)
+          - script: ls
 
 
   - stage: Post
