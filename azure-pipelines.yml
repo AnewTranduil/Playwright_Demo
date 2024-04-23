@@ -73,3 +73,7 @@ stages:
       - job: PostTest
         steps:
           - script: echo "Post test script"
+          - download: current
+            patterns: 'playwright-report/*'
+          - script: ls
+          - script: ls playwright-report
