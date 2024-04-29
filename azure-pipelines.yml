@@ -62,7 +62,7 @@ stages:
             condition: succeededOrFailed()
           - task: PublishPipelineArtifact@1
             inputs:
-              targetPath: playwright-report
+              targetPath: 'results.xml'
               artifact: playwright-report-$(name)
               publishLocation: 'pipeline'
             condition: succeededOrFailed()
@@ -74,7 +74,10 @@ stages:
         steps:
           - script: echo "Post test script"
           - download: current
-            patterns: '**/*.html'
-          - script: ls $(Pipeline.Workspace)
-          - script: ls $(Pipeline.Workspace)/TestResults
+            patterns: '**/results.xml'
+          - script: mkdir reports
+          - script: mv $(Pipeline.Workspace)/playwright-report-part1/results.xml ./reports/part1.xml
+          - script: mv $(Pipeline.Workspace)/playwright-report-part2/results.xml ./reports/part2.xml
+          - script: mv $(Pipeline.Workspace)/playwright-report-part3/results.xml ./reports/part3.xml
+          - script: ls ./reports
           - script: ls
