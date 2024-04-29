@@ -51,15 +51,6 @@ stages:
             displayName:  'Install npm deps'
           - script: npm test -- --shard=$(shard)
           - script: ls
-          - task: PublishTestResults@2
-            displayName: 'Publish test results'
-            inputs:
-              testResultsFormat: 'JUnit'
-              testResultsFiles: 'results.xml'
-              mergeTestResults: true
-              failTaskOnFailedTests: true
-              testRunTitle: playwright_test_$(name)
-            condition: succeededOrFailed()
           - task: PublishPipelineArtifact@1
             inputs:
               targetPath: blob-report
@@ -79,6 +70,15 @@ stages:
           - script: mv $(Pipeline.Workspace)/playwright-report-part1/report-1.zip ./reports/report-1.zip
           - script: mv $(Pipeline.Workspace)/playwright-report-part2/report-2.zip ./reports/report-2.zip
           - script: mv $(Pipeline.Workspace)/playwright-report-part3/report-3.zip ./reports/report-3.zip
-          - script: npm install && npx playwright merge-reports --config=playwright.config.ts --reporter junit ./reports
+          - script: npm install && npx playwright merge-reports --config=playwright.config.ts --reporter junit ./reports > results.xml
           - script: ls
           - script: ls ./reports
+          - task: PublishTestResults@2
+            displayName: 'Publish test results'
+            inputs:
+              testResultsFormat: 'JUnit'
+              testResultsFiles: 'results.xml'
+              mergeTestResults: true
+              failTaskOnFailedTests: true
+              testRunTitle: playwright_test_combined
+            condition: succeededOrFailed()
