@@ -76,9 +76,9 @@ stages:
           - download: current
             patterns: '**/report*.zip'
           - script: mkdir reports
-          - script: mv $(Pipeline.Workspace)/playwright-report-part1/blob-report/report-1.zip ./reports/report-1.zip
-          - script: mv $(Pipeline.Workspace)/playwright-report-part2/blob-report/report-2.zip ./reports/report-2.zip
-          - script: mv $(Pipeline.Workspace)/playwright-report-part3/blob-report/report-3.zip ./reports/report-3.zip
+          - script: mv $(Pipeline.Workspace)/playwright-report-part1/report-1.zip ./reports/report-1.zip
+          - script: mv $(Pipeline.Workspace)/playwright-report-part2/report-2.zip ./reports/report-2.zip
+          - script: mv $(Pipeline.Workspace)/playwright-report-part3/report-3.zip ./reports/report-3.zip
           - script: ls ./reports
           - script: npx playwright merge-reports --reporter junit ./reports
           - script: ls
