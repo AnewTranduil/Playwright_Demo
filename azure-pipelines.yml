@@ -55,14 +55,14 @@ stages:
             displayName: 'Publish test results'
             inputs:
               testResultsFormat: 'JUnit'
-              testResultsFiles: blob-report
+              testResultsFiles: 'results.xml'
               mergeTestResults: true
               failTaskOnFailedTests: true
               testRunTitle: playwright_test_$(name)
             condition: succeededOrFailed()
           - task: PublishPipelineArtifact@1
             inputs:
-              targetPath: 'results.xml'
+              targetPath: blob-report
               artifact: playwright-report-$(name)
               publishLocation: 'pipeline'
             condition: succeededOrFailed()
