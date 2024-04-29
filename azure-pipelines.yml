@@ -55,7 +55,7 @@ stages:
             displayName: 'Publish test results'
             inputs:
               testResultsFormat: 'JUnit'
-              testResultsFiles: 'results.xml'
+              testResultsFiles: blob-report
               mergeTestResults: true
               failTaskOnFailedTests: true
               testRunTitle: playwright_test_$(name)
@@ -74,10 +74,12 @@ stages:
         steps:
           - script: echo "Post test script"
           - download: current
-            patterns: '**/results.xml'
+            patterns: '**/report*.zip'
           - script: mkdir reports
-          - script: mv $(Pipeline.Workspace)/playwright-report-part1/results.xml ./reports/part1.xml
-          - script: mv $(Pipeline.Workspace)/playwright-report-part2/results.xml ./reports/part2.xml
-          - script: mv $(Pipeline.Workspace)/playwright-report-part3/results.xml ./reports/part3.xml
+          - script: mv $(Pipeline.Workspace)/playwright-report-part1/blob-report/report-1.zip ./reports/report-1.zip
+          - script: mv $(Pipeline.Workspace)/playwright-report-part2/blob-report/report-2.zip ./reports/report-2.zip
+          - script: mv $(Pipeline.Workspace)/playwright-report-part3/blob-report/report-3.zip ./reports/report-3.zip
           - script: ls ./reports
+          - script: npx playwright merge-reports --reporter junit ./reports
           - script: ls
+
