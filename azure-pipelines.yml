@@ -64,7 +64,7 @@ stages:
 
 
   - stage: Post
-    dependsOn: Pre
+    dependsOn: Pre, Test
     jobs:
       - job: PostTest
         steps:
