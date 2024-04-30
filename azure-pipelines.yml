@@ -83,7 +83,7 @@ stages:
               TEST_VAR: $(stageDependencies.Pre.PreTest.outputs['Pre_one.testVar1'])
           - script: echo "second var - $TEST_VAR"
             env:
-              TEST_VAR: $(stageDependencies.Pre.PreTest.outputs['Pre_two.testVar2'])
+              TEST_VAR: $(stageDependencies)
 #          - task: PublishTestResults@2
 #            displayName: 'Publish test results'
 #            inputs:
