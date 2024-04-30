@@ -65,6 +65,9 @@ stages:
 
   - stage: Post
     dependsOn: [Pre, Test]
+    variables:
+      one: $[stageDependencies.Pre.PreTest.outputs['Pre_one.testVar1']]
+      two: $[stageDependencies.Pre.PreTest.outputs['Pre_two.testVar2']]
     jobs:
       - job: PostTest
         steps:
@@ -80,10 +83,10 @@ stages:
 #          - script: ls ./reports
           - script: echo "first var - $TEST_VAR"
             env:
-              TEST_VAR: $(stageDependencies.Pre.PreTest.outputs['Pre_one.testVar1'])
+              TEST_VAR: $(one)
           - script: echo "second var - $TEST_VAR"
             env:
-              TEST_VAR: $(stageDependencies)
+              TEST_VAR: $(two)
 #          - task: PublishTestResults@2
 #            displayName: 'Publish test results'
 #            inputs:
