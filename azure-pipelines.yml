@@ -35,8 +35,6 @@ stages:
           - script: echo "second var - $TEST_VAR"
             env:
               TEST_VAR: $(two)
-          - script: echo "first var expression -  $[stageDependencies.Pre.PreTest.outputs['Pre_one.testVar1']]"
-          - script: echo "second var expression - $[stageDependencies.Pre.Pre_Test_2.outputs['Pre_two.testVar2']]"
           - script: echo "first var env exp - $TEST_VAR"
             env:
               TEST_VAR: $[stageDependencies.Pre.PreTest.outputs['Pre_one.testVar1']]
