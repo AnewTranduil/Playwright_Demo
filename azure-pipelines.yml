@@ -13,9 +13,11 @@ stages:
       - job: PreTest
         steps:
           - script: echo "Pre test script"
+          - script: echo "##vso[task.setvariable variable=testVar1]value"
       - job: Pre_Test_2
         steps:
           - script: echo "Another job run"    
+          - script: echo "##vso[task.setvariable variable=testVar2]other"
 
   - stage: Test
     jobs:
@@ -73,6 +75,8 @@ stages:
           - script: npm install && npx playwright merge-reports --config=playwright.config.ts --reporter junit ./reports > results.xml
           - script: ls
           - script: ls ./reports
+          - script: echo "first var - $(testVar1)"
+          - script: echo "second var - $(testVar2)"
           - task: PublishTestResults@2
             displayName: 'Publish test results'
             inputs:
