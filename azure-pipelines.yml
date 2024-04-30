@@ -75,8 +75,12 @@ stages:
           - script: npm install && npx playwright merge-reports --config=playwright.config.ts --reporter junit ./reports > results.xml
           - script: ls
           - script: ls ./reports
-          - script: echo "first var - $(testVar1)"
-          - script: echo "second var - $(testVar2)"
+          - script: echo "first var - $TEST_VAR"
+            env:
+              TEST_VAR: $(testVar1)
+          - script: echo "second var - $TEST_VAR"
+            env:
+              TEST_VAR: $(testVar2)
           - task: PublishTestResults@2
             displayName: 'Publish test results'
             inputs:
