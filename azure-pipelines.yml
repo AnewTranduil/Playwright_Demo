@@ -49,50 +49,50 @@ stages:
               path: $(npm_config_cache)
             displayName: Cache npm  
             
-#          - script: |
-#              npm install
-#              npx playwright install --with-deps
-#            displayName:  'Install npm deps'
-#          - script: npm test -- --shard=$(shard)
-#          - script: ls
-#          - task: PublishPipelineArtifact@1
-#            inputs:
-#              targetPath: blob-report
-#              artifact: playwright-report-$(name)
-#              publishLocation: 'pipeline'
-#            condition: succeededOrFailed()
+          - script: |
+              npm install
+              npx playwright install --with-deps
+            displayName:  'Install npm deps'
+          - script: npm test -- --shard=$(shard)
+          - script: ls
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: blob-report
+              artifact: playwright-report-$(name)
+              publishLocation: 'pipeline'
+            condition: succeededOrFailed()
 
 
   - stage: Post
     dependsOn: [Pre, Test]
     variables:
       one: $[stageDependencies.Pre.PreTest.outputs['Pre_one.testVar1']]
-      two: $[stageDependencies.Pre.PreTest.outputs['Pre_two.testVar2']]
+      two: $[stageDependencies.Pre.Pre_Test_2.outputs['Pre_two.testVar2']]
     jobs:
       - job: PostTest
         steps:
           - script: echo "Post test script"
-#          - download: current
-#            patterns: '**/report*.zip'
-#          - script: mkdir reports
-#          - script: mv $(Pipeline.Workspace)/playwright-report-part1/report-1.zip ./reports/report-1.zip
-#          - script: mv $(Pipeline.Workspace)/playwright-report-part2/report-2.zip ./reports/report-2.zip
-#          - script: mv $(Pipeline.Workspace)/playwright-report-part3/report-3.zip ./reports/report-3.zip
-#          - script: npm install && npx playwright merge-reports --config=playwright.config.ts --reporter junit ./reports > results.xml
-#          - script: ls
-#          - script: ls ./reports
+          - download: current
+            patterns: '**/report*.zip'
+          - script: mkdir reports
+          - script: mv $(Pipeline.Workspace)/playwright-report-part1/report-1.zip ./reports/report-1.zip
+          - script: mv $(Pipeline.Workspace)/playwright-report-part2/report-2.zip ./reports/report-2.zip
+          - script: mv $(Pipeline.Workspace)/playwright-report-part3/report-3.zip ./reports/report-3.zip
+          - script: npm install && npx playwright merge-reports --config=playwright.config.ts --reporter junit ./reports > results.xml
+          - script: ls
+          - script: ls ./reports
           - script: echo "first var - $TEST_VAR"
             env:
               TEST_VAR: $(one)
           - script: echo "second var - $TEST_VAR"
             env:
               TEST_VAR: $(two)
-#          - task: PublishTestResults@2
-#            displayName: 'Publish test results'
-#            inputs:
-#              testResultsFormat: 'JUnit'
-#              testResultsFiles: 'results.xml'
-#              mergeTestResults: true
-#              failTaskOnFailedTests: true
-#              testRunTitle: playwright_test_combined
-#            condition: succeededOrFailed()
+          - task: PublishTestResults@2
+            displayName: 'Publish test results'
+            inputs:
+              testResultsFormat: 'JUnit'
+              testResultsFiles: 'results.xml'
+              mergeTestResults: true
+              failTaskOnFailedTests: true
+              testRunTitle: playwright_test_combined
+            condition: succeededOrFailed()
