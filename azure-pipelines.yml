@@ -13,11 +13,13 @@ stages:
       - job: PreTest
         steps:
           - script: echo "Pre test script"
-          - script: echo "##vso[task.setvariable variable=testVar1]value"
+          - script: echo "##vso[task.setvariable variable=testVar1;isOutput=true]value"
+            name: Pre_one
       - job: Pre_Test_2
         steps:
           - script: echo "Another job run"    
-          - script: echo "##vso[task.setvariable variable=testVar2]other"
+          - script: echo "##vso[task.setvariable variable=testVar2;isOutput=true]other"
+            name: Pre_two
 
   - stage: Test
     jobs:
@@ -62,6 +64,7 @@ stages:
 
 
   - stage: Post
+    dependsOn: Pre
     jobs:
       - job: PostTest
         steps:
@@ -77,10 +80,10 @@ stages:
           - script: ls ./reports
           - script: echo "first var - $TEST_VAR"
             env:
-              TEST_VAR: $(testVar1)
+              TEST_VAR: stageDependencies.Pre.PreTest.outputs['Pre_one.testVar1']
           - script: echo "second var - $TEST_VAR"
             env:
-              TEST_VAR: $(testVar2)
+              TEST_VAR: stageDependencies.Pre.PreTest.outputs['Pre_two.testVar2']
           - task: PublishTestResults@2
             displayName: 'Publish test results'
             inputs:
